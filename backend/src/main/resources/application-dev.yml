@@ -1,0 +1,27 @@
+# Dev profile: enables Swagger, relaxed logging, auto-creates Spring Session tables.
+# Activate with: -Dspring.profiles.active=dev
+
+spring:
+  session:
+    jdbc:
+      initialize-schema: always
+
+  flyway:
+    locations: classpath:db/migration,classpath:db/seed
+    # SYS schema is pre-populated with Oracle system objects; baseline lets Flyway start fresh.
+    # Remove this once GLM_APP (clean schema) is used instead of SYS.
+    baseline-on-migrate: true
+    baseline-version: 0
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger
+
+logging:
+  level:
+    com.glm: DEBUG
+    org.springframework.security: DEBUG
+    org.flywaydb: DEBUG

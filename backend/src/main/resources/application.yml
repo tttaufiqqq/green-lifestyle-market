@@ -1,0 +1,64 @@
+# Configure using environment variables from docs/environment.md
+# Run with -Dspring.profiles.active=dev for local development
+
+spring:
+  application:
+    name: green-lifestyle-market
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      # Passed to DriverManager.getConnection() as extra connection properties.
+      # Set DB_INTERNAL_LOGON=sysdba when connecting as SYS; leave unset for normal app users.
+      data-source-properties:
+        internal_logon: ${DB_INTERNAL_LOGON:}
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.OracleDialect
+    open-in-view: false
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: false
+
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: never
+    timeout: ${SESSION_TIMEOUT_MINUTES:10080}m
+
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:25}
+    properties:
+      mail.smtp.auth: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+  health:
+    mail:
+      enabled: false
+
+server:
+  port: 8080
+
+app:
+  base-url: ${APP_BASE_URL:http://localhost:8080}
+  upload-dir: ${UPLOAD_DIR:/var/glm/uploads}
+  platform-fee-percent: ${PLATFORM_FEE_PERCENT:5}
+  payment-expiry-minutes: ${PAYMENT_EXPIRY_MINUTES:30}
+  auto-complete-days: ${AUTO_COMPLETE_DAYS:7}

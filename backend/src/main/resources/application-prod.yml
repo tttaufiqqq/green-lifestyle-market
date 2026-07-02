@@ -1,0 +1,12 @@
+# Prod profile: Swagger disabled, minimal logging, session tables managed by Flyway.
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+logging:
+  level:
+    root: WARN
+    com.glm: INFO
