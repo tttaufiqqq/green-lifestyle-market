@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 import App from './App'
-import HomePage from './features/home/HomePage'
+import BrowsePage from './features/catalog/BrowsePage'
+import ProductDetailPage from './features/catalog/ProductDetailPage'
 import LoginPage from './features/auth/LoginPage'
 import RegisterPage from './features/auth/RegisterPage'
 import VerifyEmailPage from './features/auth/VerifyEmailPage'
@@ -34,7 +35,8 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />,
     children: [
-      { index: true,              element: <HomePage /> },
+      { index: true,              element: <BrowsePage /> },
+      { path: 'products/:slug',   element: <ProductDetailPage /> },
       { path: 'login',            element: <LoginPage /> },
       { path: 'register',         element: <RegisterPage /> },
       { path: 'verify-email',     element: <VerifyEmailPage /> },
