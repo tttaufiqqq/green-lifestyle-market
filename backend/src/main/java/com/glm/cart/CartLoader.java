@@ -40,8 +40,9 @@ public class CartLoader {
         Map<Long, String>  imageMap  = batchImages(productIds);
 
         // LinkedHashMap preserves insertion order for seller groups
-        Map<Long, List<CartItemView>> bySeller  = new LinkedHashMap<>();
-        Map<Long, String>             sellerNames = new LinkedHashMap<>();
+        Map<Long, List<CartItemView>> bySeller     = new LinkedHashMap<>();
+        Map<Long, String>             sellerNames  = new LinkedHashMap<>();
+        Map<Long, boolean[]>          fulfilFlags  = new LinkedHashMap<>(); // [allowMeetup, allowShipping]
         boolean hasWarnings = false;
         int totalItems = 0;
 
@@ -67,10 +68,18 @@ public class CartLoader {
             sellerNames.putIfAbsent(sellerId, sellerName);
             bySeller.computeIfAbsent(sellerId, k -> new ArrayList<>()).add(view);
             totalItems += ci.getQuantity();
+
+            // Aggregate fulfilment flags: group allows method only if ALL items support it
+            boolean[] flags = fulfilFlags.computeIfAbsent(sellerId, k -> new boolean[]{true, true});
+            if (!p.isAllowMeetup())   flags[0] = false;
+            if (!p.isAllowShipping()) flags[1] = false;
         }
 
         List<SellerGroupView> groups = bySeller.entrySet().stream()
-            .map(e -> new SellerGroupView(e.getKey(), sellerNames.get(e.getKey()), e.getValue()))
+            .map(e -> {
+                boolean[] f = fulfilFlags.getOrDefault(e.getKey(), new boolean[]{true, false});
+                return new SellerGroupView(e.getKey(), sellerNames.get(e.getKey()), e.getValue(), f[0], f[1]);
+            })
             .toList();
 
         return new CartView(groups, totalItems, hasWarnings);

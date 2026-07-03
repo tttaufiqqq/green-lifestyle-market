@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { cartApi } from './cart.api'
 import { useCartStore } from '../../stores/cart'
 import SellerGroup from './SellerGroup'
@@ -10,6 +10,7 @@ function computeGrandTotal(groups) {
 }
 
 export default function CartPage() {
+  const navigate = useNavigate()
   const qc = useQueryClient()
   const setCount = useCartStore(s => s.setCount)
 
@@ -88,6 +89,7 @@ export default function CartPage() {
         <p className="text-xs text-zinc-400 mt-1">Shipping calculated at checkout</p>
         <button
           disabled={hasWarnings}
+          onClick={() => navigate('/checkout')}
           className="btn-primary w-full mt-4 disabled:opacity-50 disabled:cursor-not-allowed">
           Proceed to Checkout
         </button>

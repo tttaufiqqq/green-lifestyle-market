@@ -62,3 +62,7 @@ app:
   platform-fee-percent: ${PLATFORM_FEE_PERCENT:5}
   payment-expiry-minutes: ${PAYMENT_EXPIRY_MINUTES:30}
   auto-complete-days: ${AUTO_COMPLETE_DAYS:7}
+  toyyibpay:
+    base-url: ${TOYYIBPAY_BASE_URL:https://dev.toyyibpay.com}
+    secret-key: ${TOYYIBPAY_SECRET_KEY:}
+    category-code: ${TOYYIBPAY_CATEGORY_CODE:}
