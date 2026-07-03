@@ -17,7 +17,11 @@ export default function Navbar() {
         <nav className="hidden md:flex items-center gap-6 text-sm text-zinc-600">
           <Link to="/" className="hover:text-zinc-900 transition-colors">Browse</Link>
           {user && (
-            <Link to="/listings" className="hover:text-zinc-900 transition-colors">My Listings</Link>
+            <>
+              <Link to="/listings" className="hover:text-zinc-900 transition-colors">My Listings</Link>
+              <Link to="/orders"   className="hover:text-zinc-900 transition-colors">My Orders</Link>
+              <Link to="/sales"    className="hover:text-zinc-900 transition-colors">My Sales</Link>
+            </>
           )}
           {user?.role === 'ADMIN' && (
             <Link to="/admin/products" className="hover:text-zinc-900 transition-colors">Admin</Link>

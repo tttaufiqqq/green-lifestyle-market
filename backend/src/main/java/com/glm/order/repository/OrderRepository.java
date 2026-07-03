@@ -3,6 +3,8 @@ package com.glm.order.repository;
 import com.glm.order.entity.Order;
 import com.glm.order.entity.Order.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
+import java.time.Instant;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,4 +15,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByPaymentId(Long paymentId);
     List<Order> findByBuyerIdAndStatus(Long buyerId, Status status);
     List<Order> findBySellerIdAndStatus(Long sellerId, Status status);
+    List<Order> findByBuyerIdAndStatusInOrderByCreatedAtDesc(Long buyerId, Collection<Status> statuses);
+    List<Order> findBySellerIdAndStatusInOrderByCreatedAtDesc(Long sellerId, Collection<Status> statuses);
+    List<Order> findByStatusInAndShippedAtBefore(Collection<Status> statuses, Instant cutoff);
 }

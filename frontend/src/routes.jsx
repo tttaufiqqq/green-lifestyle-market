@@ -15,6 +15,10 @@ import AdminProductsPage from './features/admin/products/AdminProductsPage'
 import CartPage from './features/cart/CartPage'
 import CheckoutPage from './features/checkout/CheckoutPage'
 import PaymentResultPage from './features/checkout/PaymentResultPage'
+import MyOrdersPage from './features/orders/MyOrdersPage'
+import OrderDetailPage from './features/orders/OrderDetailPage'
+import MySalesPage from './features/orders/MySalesPage'
+import SaleDetailPage from './features/orders/SaleDetailPage'
 import { useAuthStore } from './stores/auth'
 
 function RequireAuth({ children }) {
@@ -52,6 +56,10 @@ const router = createBrowserRouter([
       { path: 'cart',             element: <RequireAuth><CartPage /></RequireAuth> },
       { path: 'checkout',         element: <RequireAuth><CheckoutPage /></RequireAuth> },
       { path: 'payment/result/:paymentNo', element: <RequireAuth><PaymentResultPage /></RequireAuth> },
+      { path: 'orders',                   element: <RequireAuth><MyOrdersPage /></RequireAuth> },
+      { path: 'orders/:orderNo',          element: <RequireAuth><OrderDetailPage /></RequireAuth> },
+      { path: 'sales',                    element: <RequireAuth><MySalesPage /></RequireAuth> },
+      { path: 'sales/:orderNo',           element: <RequireAuth><SaleDetailPage /></RequireAuth> },
       { path: 'admin/categories', element: <RequireAdmin><AdminCategoriesPage /></RequireAdmin> },
       { path: 'admin/products',   element: <RequireAdmin><AdminProductsPage /></RequireAdmin> },
     ],

@@ -21,7 +21,7 @@ Status keys: TODO / IN-PROGRESS / DONE / BLOCKED
 | 05 | Browse, search, product detail | DONE | CatalogQueryService (dynamic JPQL + Oracle Text), ProductPublicController; frontend BrowsePage (URL-synced filters), ProductDetailPage, FilterBar, ProductCard |
 | 06 | Cart | DONE | CartValidator, CartLoader, CartService, CartController; V7 migration; cart store + badge; add-to-cart on ProductDetailPage |
 | 07 | Checkout, orders, ToyyibPay | DONE | CheckoutService/Recorder/Validator, FeeCalculator, ToyyibPayClient, PaymentSettleService, WebhookEventService, PaymentCallbackService, PaymentSweeper, OrderTransitionService stub; V8 migration; CheckoutPage, PaymentResultPage, FulfilmentSelector |
-| 08 | Order lifecycle & fulfilment | TODO | |
+| 08 | Order lifecycle & fulfilment | DONE | TransitionGuard (full table), StockRestorer, RefundCreator, OrderNotifier, AutoCompleteJob (03:00 MYT); OrderTransitionService (8 events), BuyerOrderService/Controller, SellerOrderService/Controller, OrderMapper; frontend MyOrdersPage, OrderDetailPage, OrderTimeline, RefundModal, MySalesPage, SaleDetailPage, SaleActionModals |
 | 09 | Refunds, payouts, admin, reconciliation | TODO | |
 | 10 | Notifications, articles, user guide | TODO | |
 
