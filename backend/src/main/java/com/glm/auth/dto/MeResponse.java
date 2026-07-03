@@ -8,13 +8,15 @@ public record MeResponse(
     String email,
     String role,
     String affiliation,
-    boolean emailVerified
+    boolean emailVerified,
+    int cartCount
 ) {
-    public static MeResponse from(User u) {
+    public static MeResponse from(User u, int cartCount) {
         return new MeResponse(
             u.getId(), u.getName(), u.getEmail(),
             u.getRole().name(), u.getAffiliation().name(),
-            u.getEmailVerifiedAt() != null
+            u.getEmailVerifiedAt() != null,
+            cartCount
         );
     }
 }

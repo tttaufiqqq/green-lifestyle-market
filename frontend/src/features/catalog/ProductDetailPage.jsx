@@ -1,22 +1,43 @@
 import { useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
+import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { catalogApi } from './catalog.api'
+import { cartApi } from '../cart/cart.api'
+import { useAuthStore } from '../../stores/auth'
+import { useCartStore } from '../../stores/cart'
 
 export default function ProductDetailPage() {
   const { slug } = useParams()
+  const navigate  = useNavigate()
+  const qc        = useQueryClient()
+  const user      = useAuthStore(s => s.user)
+  const setCount  = useCartStore(s => s.setCount)
+
   const { data: p, isLoading, error } = useQuery({
     queryKey: ['product', slug],
     queryFn: () => catalogApi.getProduct(slug),
   })
 
   const [imgIdx, setImgIdx] = useState(0)
+  const [qty, setQty]       = useState(1)
+  const [added, setAdded]   = useState(false)
+
+  const addMut = useMutation({
+    mutationFn: () => cartApi.addItem(p.id, qty),
+    onSuccess: (data) => {
+      qc.setQueryData(['cart'], data)
+      setCount(data.totalItems)
+      setAdded(true)
+      setTimeout(() => setAdded(false), 2000)
+    },
+  })
 
   if (isLoading) return <p className="p-6">Loading…</p>
-  if (error) return <p className="p-6 text-red-600">Product not found.</p>
+  if (error)     return <p className="p-6 text-red-600">Product not found.</p>
 
   const primaryImg = p.images?.[imgIdx]?.path ?? p.images?.find(i => i.isPrimary)?.path
   const outOfStock = p.availability <= 0
+  const isOwn      = user && p.seller?.id === user.id
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-8">
@@ -64,14 +85,44 @@ export default function ProductDetailPage() {
 
           <div className="text-sm whitespace-pre-wrap text-zinc-700">{p.description}</div>
 
+          {/* Add to cart / CTA */}
+          <div className="space-y-2 pt-2">
+            {isOwn ? (
+              <Link to={`/listings/${p.id}/edit`} className="btn-secondary block text-center">
+                Edit Listing
+              </Link>
+            ) : !user ? (
+              <Link to="/login" className="btn-primary block text-center">
+                Sign in to purchase
+              </Link>
+            ) : outOfStock ? (
+              <button disabled className="btn-primary w-full opacity-50 cursor-not-allowed">Out of stock</button>
+            ) : (
+              <div className="flex gap-2">
+                <div className="flex items-center border border-zinc-200 rounded-lg">
+                  <button onClick={() => setQty(q => Math.max(1, q - 1))}
+                    className="px-3 py-2 text-zinc-500 hover:text-zinc-900">-</button>
+                  <span className="px-3 py-2 text-sm font-medium w-10 text-center">{qty}</span>
+                  <button onClick={() => setQty(q => Math.min(p.availability, q + 1))}
+                    className="px-3 py-2 text-zinc-500 hover:text-zinc-900">+</button>
+                </div>
+                <button
+                  onClick={() => addMut.mutate()}
+                  disabled={addMut.isPending || added}
+                  className="btn-primary flex-1 disabled:opacity-70">
+                  {added ? 'Added!' : addMut.isPending ? 'Adding…' : 'Add to Cart'}
+                </button>
+              </div>
+            )}
+            {addMut.error && (
+              <p className="text-sm text-red-600">{addMut.error.message}</p>
+            )}
+          </div>
+
           <div className="space-y-2 text-sm border-t pt-4">
             <p className="font-semibold">Fulfilment</p>
-            {p.allowMeetup && (
-              <p>📍 Meetup — {p.meetupLocation}</p>
-            )}
-            {p.allowShipping && (
-              <p>📦 Shipping — RM {p.shippingFee != null ? Number(p.shippingFee).toFixed(2) : '0.00'}</p>
-            )}
+            {p.allowMeetup  && <p>📍 Meetup — {p.meetupLocation}</p>}
+            {p.allowShipping && <p>📦 Shipping — RM {p.shippingFee != null ? Number(p.shippingFee).toFixed(2) : '0.00'}</p>}
           </div>
 
           <div className="text-sm border-t pt-4 text-zinc-500">

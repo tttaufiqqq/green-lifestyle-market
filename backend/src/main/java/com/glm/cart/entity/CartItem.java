@@ -23,4 +23,7 @@ public class CartItem {
 
     @Column(name = "quantity", nullable = false)
     private int quantity = 1;
+
+    @Column(name = "price_snapshot", precision = 10, scale = 2)
+    private java.math.BigDecimal priceSnapshot;
 }

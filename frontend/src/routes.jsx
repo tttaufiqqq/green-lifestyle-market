@@ -12,6 +12,7 @@ import MyListingsPage from './features/listings/MyListingsPage'
 import ListingFormPage from './features/listings/ListingFormPage'
 import AdminCategoriesPage from './features/admin/categories/AdminCategoriesPage'
 import AdminProductsPage from './features/admin/products/AdminProductsPage'
+import CartPage from './features/cart/CartPage'
 import { useAuthStore } from './stores/auth'
 
 function RequireAuth({ children }) {
@@ -46,6 +47,7 @@ const router = createBrowserRouter([
       { path: 'listings',         element: <RequireAuth><MyListingsPage /></RequireAuth> },
       { path: 'listings/new',     element: <RequireAuth><ListingFormPage /></RequireAuth> },
       { path: 'listings/:id/edit',element: <RequireAuth><ListingFormPage /></RequireAuth> },
+      { path: 'cart',             element: <RequireAuth><CartPage /></RequireAuth> },
       { path: 'admin/categories', element: <RequireAdmin><AdminCategoriesPage /></RequireAdmin> },
       { path: 'admin/products',   element: <RequireAdmin><AdminProductsPage /></RequireAdmin> },
     ],

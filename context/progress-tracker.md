@@ -19,7 +19,7 @@ Status keys: TODO / IN-PROGRESS / DONE / BLOCKED
 | 03 | Auth & accounts | DONE | AuthController, AuthService, UserService, TokenService, MailService, AccountController; frontend auth pages + Zustand store |
 | 04 | Categories & listings | DONE | CategoryController, AdminCategoryController, ListingController, AdminProductController; CategoryService, ProductService, ListingValidator, ImageService, SlugGenerator; frontend MyListingsPage, ListingFormPage, AdminCategoriesPage, AdminProductsPage; Thumbnailator added |
 | 05 | Browse, search, product detail | DONE | CatalogQueryService (dynamic JPQL + Oracle Text), ProductPublicController; frontend BrowsePage (URL-synced filters), ProductDetailPage, FilterBar, ProductCard |
-| 06 | Cart | TODO | |
+| 06 | Cart | DONE | CartValidator, CartLoader, CartService, CartController; V7 migration; cart store + badge; add-to-cart on ProductDetailPage |
 | 07 | Checkout, orders, ToyyibPay | TODO | |
 | 08 | Order lifecycle & fulfilment | TODO | |
 | 09 | Refunds, payouts, admin, reconciliation | TODO | |

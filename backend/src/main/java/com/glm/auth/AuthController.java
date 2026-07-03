@@ -1,7 +1,9 @@
 package com.glm.auth;
 
 import com.glm.auth.dto.*;
+import com.glm.cart.CartService;
 import com.glm.common.security.GlmUserDetails;
+import com.glm.user.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -14,9 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    private final CartService cartService;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, CartService cartService) {
         this.authService = authService;
+        this.cartService = cartService;
     }
 
     @PostMapping("/register")
@@ -27,7 +31,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public MeResponse login(@Valid @RequestBody LoginRequest req, HttpServletRequest httpReq) {
-        return MeResponse.from(authService.login(req, httpReq));
+        User user = authService.login(req, httpReq);
+        return MeResponse.from(user, cartService.getCartCount(user.getId()));
     }
 
     @PostMapping("/logout")
@@ -39,7 +44,8 @@ public class AuthController {
 
     @GetMapping("/me")
     public MeResponse me(@AuthenticationPrincipal GlmUserDetails d) {
-        return MeResponse.from(d.getUser());
+        User user = d.getUser();
+        return MeResponse.from(user, cartService.getCartCount(user.getId()));
     }
 
     @PostMapping("/verify-email")
