@@ -15,6 +15,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findBySellerId(Long sellerId);
 
     List<Product> findBySellerIdAndStatus(Long sellerId, Status status);
+    long countByStatus(Status status);
+    List<Product> findAllByOrderByCreatedAtDesc();
 
     /**
      * Full-text search via Oracle Text CONTEXT index on title+description.

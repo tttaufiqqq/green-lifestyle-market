@@ -10,8 +10,6 @@ import ResetPasswordPage from './features/auth/ResetPasswordPage'
 import ProfilePage from './features/auth/ProfilePage'
 import MyListingsPage from './features/listings/MyListingsPage'
 import ListingFormPage from './features/listings/ListingFormPage'
-import AdminCategoriesPage from './features/admin/categories/AdminCategoriesPage'
-import AdminProductsPage from './features/admin/products/AdminProductsPage'
 import CartPage from './features/cart/CartPage'
 import CheckoutPage from './features/checkout/CheckoutPage'
 import PaymentResultPage from './features/checkout/PaymentResultPage'
@@ -19,6 +17,16 @@ import MyOrdersPage from './features/orders/MyOrdersPage'
 import OrderDetailPage from './features/orders/OrderDetailPage'
 import MySalesPage from './features/orders/MySalesPage'
 import SaleDetailPage from './features/orders/SaleDetailPage'
+import MyPayoutsPage from './features/payouts/MyPayoutsPage'
+import AdminLayout from './features/admin/AdminLayout'
+import AdminDashboardPage from './features/admin/AdminDashboardPage'
+import AdminUsersPage from './features/admin/AdminUsersPage'
+import AdminOrdersPage from './features/admin/AdminOrdersPage'
+import AdminRefundsPage from './features/admin/AdminRefundsPage'
+import AdminPayoutsPage from './features/admin/AdminPayoutsPage'
+import AdminReconciliationPage from './features/admin/AdminReconciliationPage'
+import AdminCategoriesPage from './features/admin/categories/AdminCategoriesPage'
+import AdminProductsPage from './features/admin/products/AdminProductsPage'
 import { useAuthStore } from './stores/auth'
 
 function RequireAuth({ children }) {
@@ -56,12 +64,25 @@ const router = createBrowserRouter([
       { path: 'cart',             element: <RequireAuth><CartPage /></RequireAuth> },
       { path: 'checkout',         element: <RequireAuth><CheckoutPage /></RequireAuth> },
       { path: 'payment/result/:paymentNo', element: <RequireAuth><PaymentResultPage /></RequireAuth> },
-      { path: 'orders',                   element: <RequireAuth><MyOrdersPage /></RequireAuth> },
-      { path: 'orders/:orderNo',          element: <RequireAuth><OrderDetailPage /></RequireAuth> },
-      { path: 'sales',                    element: <RequireAuth><MySalesPage /></RequireAuth> },
-      { path: 'sales/:orderNo',           element: <RequireAuth><SaleDetailPage /></RequireAuth> },
-      { path: 'admin/categories', element: <RequireAdmin><AdminCategoriesPage /></RequireAdmin> },
-      { path: 'admin/products',   element: <RequireAdmin><AdminProductsPage /></RequireAdmin> },
+      { path: 'orders',           element: <RequireAuth><MyOrdersPage /></RequireAuth> },
+      { path: 'orders/:orderNo',  element: <RequireAuth><OrderDetailPage /></RequireAuth> },
+      { path: 'sales',            element: <RequireAuth><MySalesPage /></RequireAuth> },
+      { path: 'sales/:orderNo',   element: <RequireAuth><SaleDetailPage /></RequireAuth> },
+      { path: 'payouts',          element: <RequireAuth><MyPayoutsPage /></RequireAuth> },
+      {
+        path: 'admin',
+        element: <RequireAdmin><AdminLayout /></RequireAdmin>,
+        children: [
+          { index: true,              element: <AdminDashboardPage /> },
+          { path: 'orders',           element: <AdminOrdersPage /> },
+          { path: 'refunds',          element: <AdminRefundsPage /> },
+          { path: 'payouts',          element: <AdminPayoutsPage /> },
+          { path: 'reconciliation',   element: <AdminReconciliationPage /> },
+          { path: 'users',            element: <AdminUsersPage /> },
+          { path: 'listings',         element: <AdminProductsPage /> },
+          { path: 'categories',       element: <AdminCategoriesPage /> },
+        ],
+      },
     ],
   },
 ])

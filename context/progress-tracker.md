@@ -22,7 +22,7 @@ Status keys: TODO / IN-PROGRESS / DONE / BLOCKED
 | 06 | Cart | DONE | CartValidator, CartLoader, CartService, CartController; V7 migration; cart store + badge; add-to-cart on ProductDetailPage |
 | 07 | Checkout, orders, ToyyibPay | DONE | CheckoutService/Recorder/Validator, FeeCalculator, ToyyibPayClient, PaymentSettleService, WebhookEventService, PaymentCallbackService, PaymentSweeper, OrderTransitionService stub; V8 migration; CheckoutPage, PaymentResultPage, FulfilmentSelector |
 | 08 | Order lifecycle & fulfilment | DONE | TransitionGuard (full table), StockRestorer, RefundCreator, OrderNotifier, AutoCompleteJob (03:00 MYT); OrderTransitionService (8 events), BuyerOrderService/Controller, SellerOrderService/Controller, OrderMapper; frontend MyOrdersPage, OrderDetailPage, OrderTimeline, RefundModal, MySalesPage, SaleDetailPage, SaleActionModals |
-| 09 | Refunds, payouts, admin, reconciliation | TODO | |
+| 09 | Refunds, payouts, admin, reconciliation | DONE | RefundService (approve/reject/process), PayoutService (eligible/create/markPaid, payout-no PO-YYMM-XXXXXX, race guard E-PO-DUP), ReconciliationService+Job (03:30 MYT, heal MISSED_CALLBACK), AdminDashboardService; 11 DTOs; AdminLayout+Dashboard+Users+Orders+Refunds+Payouts+ReconciliationPages; MyPayoutsPage; routes wired |
 | 10 | Notifications, articles, user guide | TODO | |
 
 ## Decisions log (pointers)

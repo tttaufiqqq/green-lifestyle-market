@@ -23,8 +23,11 @@ export default function Navbar() {
               <Link to="/sales"    className="hover:text-zinc-900 transition-colors">My Sales</Link>
             </>
           )}
+          {user && (
+            <Link to="/payouts" className="hover:text-zinc-900 transition-colors">Payouts</Link>
+          )}
           {user?.role === 'ADMIN' && (
-            <Link to="/admin/products" className="hover:text-zinc-900 transition-colors">Admin</Link>
+            <Link to="/admin" className="hover:text-zinc-900 transition-colors">Admin</Link>
           )}
         </nav>
 
