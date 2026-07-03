@@ -5,7 +5,7 @@ All secrets via environment variables (never committed). Spring profile `dev` fo
 ## Backend (`backend/.env` → injected into Spring)
 | Variable | Example (dev) | Notes |
 |---|---|---|
-| `DB_URL` | `jdbc:oracle:thin:@//10.0.30.20:1521/FREEPDB1` | Oracle 23ai Free container on Proxmox db VM via Tailscale |
+| `DB_URL` | `jdbc:oracle:thin:@//100.118.110.114:1521/FREE` | Oracle 23ai Free on Proxmox db VM |
 | `DB_USER` / `DB_PASSWORD` | `glm_app` / secret | Least-privilege app user (no DDL in prod) |
 | `APP_BASE_URL` | `https://glm.tttaufiqqq.com` | Used to build ToyyibPay return/callback URLs |
 | `TOYYIBPAY_BASE_URL` | `https://dev.toyyibpay.com` | Prod: `https://toyyibpay.com` |

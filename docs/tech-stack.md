@@ -16,9 +16,9 @@
 | Client state | Zustand (global) + TanStack Query (server cache) | Small, no boilerplate |
 | Payments | ToyyibPay dev sandbox (FPX) | Malaysian gateway, free sandbox; escrow model per adr/0004 |
 | Scheduling | Spring `@Scheduled` | Reservation expiry, auto-complete, reconciliation jobs — no external queue needed at this scale |
-| Testing | JUnit 5, Mockito, Testcontainers (Oracle Free), Vitest + RTL | Integration tests hit real Oracle (gvenzl/oracle-free) in a container |
+| Testing | JUnit 5, Mockito, H2 (in-memory for unit/integration), Vitest + RTL | Simpler test setup without external dependencies |
 | Build/CI | Maven, GitHub Actions | Test + build on PR |
 | Serving | Nginx (SPA static + reverse proxy `/api`, `/ws`) | Same-origin deploy, TLS termination |
 | Dev tunnel | Cloudflare Tunnel | Public callback URL for ToyyibPay in dev |
 
-Explicitly not used in v1: Redis, message queues, microservices, Docker Swarm/K8s — right-sized for campus scale; revisit only with measured need.
+Explicitly not used in v1: Redis, message queues, microservices — right-sized for campus scale; revisit only with measured need.

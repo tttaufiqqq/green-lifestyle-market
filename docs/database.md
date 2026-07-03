@@ -1,6 +1,6 @@
 # Database Design — Oracle Database 23ai Free
 
-Target: Oracle 23ai Free, PDB `FREEPDB1`, charset AL32UTF8. Managed by Flyway (Oracle-specific DDL). App connects as least-privilege schema user `GLM_APP`.
+Target: Oracle 23ai Free, PDB `FREE`, charset AL32UTF8. Managed by Flyway (Oracle-specific DDL). App connects as least-privilege schema user `GLM_APP`.
 
 ## Type & convention mapping (Oracle)
 | Concept | Oracle implementation |

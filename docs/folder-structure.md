@@ -92,9 +92,9 @@ backend/src/main/resources/
 └── db/migration/    V1__users_auth.sql .. V6__content_notify_audit.sql, R__dev_seed.sql
 backend/src/test/java/com/glm/
 ├── <feature>/...Test.java               # unit, mirrors main
-└── it/                                  # Testcontainers integration: MigrationIT,
-                                         # CheckoutConcurrencyIT, CallbackIdempotencyIT,
-                                         # SweeperRaceIT, PayoutUniquenessIT, SecurityMatrixIT
+└── it/                                  # H2 integration: MigrationIT,
+                                          # CheckoutConcurrencyIT, CallbackIdempotencyIT,
+                                          # SweeperRaceIT, PayoutUniquenessIT, SecurityMatrixIT
 ```
 
 ## Frontend (`frontend/src/`)
