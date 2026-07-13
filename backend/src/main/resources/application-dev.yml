@@ -8,10 +8,10 @@ spring:
 
   flyway:
     locations: classpath:db/migration,classpath:db/seed
-    # SYS schema is pre-populated with Oracle system objects; baseline lets Flyway start fresh.
-    # Remove this once GLM_APP (clean schema) is used instead of SYS.
-    baseline-on-migrate: true
-    baseline-version: 0
+    placeholders:
+      # glm_app_dev's own Flashback Archive — distinct from prod's glm_fda so
+      # they don't collide (FDA names are unique per PDB). See docs/01-oracle/glm-db-access.md.
+      flashback-archive-name: glm_fda_dev
 
 springdoc:
   api-docs:

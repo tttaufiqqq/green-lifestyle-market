@@ -5,6 +5,7 @@ import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.*;
 
 import java.sql.*;
+import java.util.Map;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,15 +13,20 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class MigrationIT {
 
+    // Targets glm_app_dev, never glm_app (prod) — this test drops and recreates the
+    // user on every run, so it must never point at the schema the deployed app uses.
+    // See docs/01-oracle/glm-db-access.md in the homelab repo.
     static final String DB_URL   = System.getenv().getOrDefault("IT_DB_URL",      "jdbc:oracle:thin:@100.118.110.114:1521/FREEPDB1");
     static final String SYS_PASS = System.getenv().getOrDefault("IT_DB_SYS_PASS", "qwertY1612");
+    static final String APP_USER = "glm_app_dev";
     static final String APP_PASS = "GlmTest_1!";
+    static final String FDA_NAME = "glm_fda_dev";
 
     static Connection conn;
 
     @BeforeAll
     static void setUp() throws Exception {
-        // ── 1. SYS: drop stale objects, recreate glm_app ──────────────────────
+        // ── 1. SYS: drop stale objects, recreate glm_app_dev ──────────────────
         Properties sysProp = new Properties();
         sysProp.setProperty("internal_logon", "sysdba");
         OracleDataSource sysDs = new OracleDataSource();
@@ -28,23 +34,24 @@ class MigrationIT {
         sysDs.setConnectionProperties(sysProp);
 
         try (Connection sysConn = sysDs.getConnection()) {
-            execIgnore(sysConn, "DROP FLASHBACK ARCHIVE glm_fda");
-            execIgnore(sysConn, "DROP USER glm_app CASCADE");
-            exec(sysConn, "CREATE USER glm_app IDENTIFIED BY \"" + APP_PASS + "\"" +
+            execIgnore(sysConn, "DROP FLASHBACK ARCHIVE " + FDA_NAME);
+            execIgnore(sysConn, "DROP USER " + APP_USER + " CASCADE");
+            exec(sysConn, "CREATE USER " + APP_USER + " IDENTIFIED BY \"" + APP_PASS + "\"" +
                           " DEFAULT TABLESPACE users TEMPORARY TABLESPACE temp QUOTA UNLIMITED ON users");
             exec(sysConn, "GRANT CREATE SESSION, CREATE TABLE, CREATE SEQUENCE," +
-                          " CREATE PROCEDURE, CREATE TRIGGER, CREATE VIEW TO glm_app");
-            exec(sysConn, "GRANT CTXAPP TO glm_app");
-            exec(sysConn, "GRANT FLASHBACK ARCHIVE ADMINISTER TO glm_app");
+                          " CREATE PROCEDURE, CREATE TRIGGER, CREATE VIEW TO " + APP_USER);
+            exec(sysConn, "GRANT CTXAPP TO " + APP_USER);
+            exec(sysConn, "GRANT FLASHBACK ARCHIVE ADMINISTER TO " + APP_USER);
         }
 
-        // ── 2. glm_app: run Flyway migrations + seed ──────────────────────────
+        // ── 2. glm_app_dev: run Flyway migrations + seed ──────────────────────
         OracleDataSource appDs = new OracleDataSource();
-        appDs.setURL(DB_URL); appDs.setUser("glm_app"); appDs.setPassword(APP_PASS);
+        appDs.setURL(DB_URL); appDs.setUser(APP_USER); appDs.setPassword(APP_PASS);
 
         Flyway.configure()
                 .dataSource(appDs)
                 .locations("classpath:db/migration", "classpath:db/seed")
+                .placeholders(Map.of("flashbackArchiveName", FDA_NAME))
                 .load()
                 .migrate();
 

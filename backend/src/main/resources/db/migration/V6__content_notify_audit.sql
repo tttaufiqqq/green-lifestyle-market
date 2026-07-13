@@ -53,11 +53,14 @@ CREATE TABLE push_subscriptions (
 );
 
 -- Flashback Data Archive: 7-year row history for payments, orders, payouts
-CREATE FLASHBACK ARCHIVE glm_fda
+-- Name is a Flyway placeholder, not a literal: FDA names are unique per PDB (not per-schema),
+-- so dev (glm_app_dev) and prod (glm_app) must use different names to avoid colliding.
+-- Set via spring.flyway.placeholders.flashback-archive-name (glm_fda in prod, glm_fda_dev in dev).
+CREATE FLASHBACK ARCHIVE ${flashbackArchiveName}
     TABLESPACE users
     QUOTA 2G
     RETENTION 7 YEAR;
 
-ALTER TABLE payments FLASHBACK ARCHIVE glm_fda;
-ALTER TABLE orders   FLASHBACK ARCHIVE glm_fda;
-ALTER TABLE payouts  FLASHBACK ARCHIVE glm_fda;
+ALTER TABLE payments FLASHBACK ARCHIVE ${flashbackArchiveName};
+ALTER TABLE orders   FLASHBACK ARCHIVE ${flashbackArchiveName};
+ALTER TABLE payouts  FLASHBACK ARCHIVE ${flashbackArchiveName};

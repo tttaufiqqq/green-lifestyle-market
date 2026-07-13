@@ -28,6 +28,10 @@ spring:
     enabled: true
     locations: classpath:db/migration
     baseline-on-migrate: false
+    placeholders:
+      # Flashback Archive names are unique per PDB, not per-schema — prod and dev
+      # must not collide. Overridden to glm_fda_dev in application-dev.yml.
+      flashback-archive-name: glm_fda
 
   session:
     store-type: jdbc
