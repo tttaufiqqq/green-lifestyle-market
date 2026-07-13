@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../../stores/auth'
 import { useCartStore } from '../../stores/cart'
+import NotificationBell from '../../features/notifications/NotificationBell'
 
 export default function Navbar() {
   const user  = useAuthStore(s => s.user)
@@ -34,6 +35,7 @@ export default function Navbar() {
         <div className="flex items-center gap-3 text-sm">
           {user ? (
             <>
+              <NotificationBell />
               <Link to="/cart" className="relative p-1 text-zinc-600 hover:text-zinc-900 transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}

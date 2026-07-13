@@ -18,6 +18,7 @@ import OrderDetailPage from './features/orders/OrderDetailPage'
 import MySalesPage from './features/orders/MySalesPage'
 import SaleDetailPage from './features/orders/SaleDetailPage'
 import MyPayoutsPage from './features/payouts/MyPayoutsPage'
+import NotificationsPage from './features/notifications/NotificationsPage'
 import AdminLayout from './features/admin/AdminLayout'
 import AdminDashboardPage from './features/admin/AdminDashboardPage'
 import AdminUsersPage from './features/admin/AdminUsersPage'
@@ -69,6 +70,7 @@ const router = createBrowserRouter([
       { path: 'sales',            element: <RequireAuth><MySalesPage /></RequireAuth> },
       { path: 'sales/:orderNo',   element: <RequireAuth><SaleDetailPage /></RequireAuth> },
       { path: 'payouts',          element: <RequireAuth><MyPayoutsPage /></RequireAuth> },
+      { path: 'notifications',    element: <RequireAuth><NotificationsPage /></RequireAuth> },
       {
         path: 'admin',
         element: <RequireAdmin><AdminLayout /></RequireAdmin>,

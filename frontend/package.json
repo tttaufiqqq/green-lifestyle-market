@@ -18,7 +18,8 @@
     "clsx": "^2.1.1",
     "tailwind-merge": "^2.4.0",
     "class-variance-authority": "^0.7.0",
-    "lucide-react": "^0.400.0"
+    "lucide-react": "^0.400.0",
+    "@stomp/stompjs": "^7.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",
