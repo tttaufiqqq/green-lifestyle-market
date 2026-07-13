@@ -3,6 +3,7 @@ package com.glm.auth;
 import com.glm.auth.dto.*;
 import com.glm.cart.CartService;
 import com.glm.common.security.GlmUserDetails;
+import com.glm.notification.NotificationService;
 import com.glm.user.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -17,10 +18,12 @@ public class AuthController {
 
     private final AuthService authService;
     private final CartService cartService;
+    private final NotificationService notificationService;
 
-    public AuthController(AuthService authService, CartService cartService) {
+    public AuthController(AuthService authService, CartService cartService, NotificationService notificationService) {
         this.authService = authService;
         this.cartService = cartService;
+        this.notificationService = notificationService;
     }
 
     @PostMapping("/register")
@@ -32,7 +35,7 @@ public class AuthController {
     @PostMapping("/login")
     public MeResponse login(@Valid @RequestBody LoginRequest req, HttpServletRequest httpReq) {
         User user = authService.login(req, httpReq);
-        return MeResponse.from(user, cartService.getCartCount(user.getId()));
+        return MeResponse.from(user, cartService.getCartCount(user.getId()), notificationService.unreadCount(user.getId()));
     }
 
     @PostMapping("/logout")
@@ -45,7 +48,7 @@ public class AuthController {
     @GetMapping("/me")
     public MeResponse me(@AuthenticationPrincipal GlmUserDetails d) {
         User user = d.getUser();
-        return MeResponse.from(user, cartService.getCartCount(user.getId()));
+        return MeResponse.from(user, cartService.getCartCount(user.getId()), notificationService.unreadCount(user.getId()));
     }
 
     @PostMapping("/verify-email")

@@ -45,4 +45,10 @@ public class NotificationService {
     public void markAllRead(User user) {
         notificationRepo.markAllReadForUser(user.getId());
     }
+
+    /** Unread count for the bell badge - used by /auth/me. */
+    @Transactional(readOnly = true)
+    public int unreadCount(Long userId) {
+        return (int) notificationRepo.countByUserIdAndReadAtIsNull(userId);
+    }
 }

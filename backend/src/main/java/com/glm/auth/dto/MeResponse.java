@@ -9,14 +9,16 @@ public record MeResponse(
     String role,
     String affiliation,
     boolean emailVerified,
-    int cartCount
+    int cartCount,
+    int unreadNotifications
 ) {
-    public static MeResponse from(User u, int cartCount) {
+    public static MeResponse from(User u, int cartCount, int unreadNotifications) {
         return new MeResponse(
             u.getId(), u.getName(), u.getEmail(),
             u.getRole().name(), u.getAffiliation().name(),
             u.getEmailVerifiedAt() != null,
-            cartCount
+            cartCount,
+            unreadNotifications
         );
     }
 }

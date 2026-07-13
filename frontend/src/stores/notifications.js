@@ -4,10 +4,9 @@ export const useNotificationStore = create((set) => ({
   unreadCount: 0,
   items: [],
 
-  setItems: (items) => set({
-    items,
-    unreadCount: items.filter((n) => !n.readAt).length,
-  }),
+  setUnreadCount: (unreadCount) => set({ unreadCount }),
+
+  setItems: (items) => set({ items }),
 
   addLive: (notification) => set((s) => ({
     items: [notification, ...s.items],
