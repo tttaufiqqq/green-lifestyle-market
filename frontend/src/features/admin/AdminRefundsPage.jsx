@@ -15,9 +15,9 @@ export default function AdminRefundsPage() {
   })
 
   const invalidate = () => { qc.invalidateQueries({ queryKey: ['admin', 'refunds'] }); setModal(null) }
-  const approveMut = useMutation({ mutationFn: (id) => adminApi.approveRefund(id), onSuccess: invalidate })
-  const rejectMut  = useMutation({ mutationFn: ({ id, note }) => adminApi.rejectRefund(id, note), onSuccess: invalidate })
-  const processMut = useMutation({ mutationFn: ({ id, bankRef, note }) => adminApi.processRefund(id, bankRef, note), onSuccess: invalidate })
+  const approveMut = useMutation({ mutationFn: (id) => adminApi.approveRefund(id), onSuccess: invalidate, meta: { successMessage: 'Refund approved' } })
+  const rejectMut  = useMutation({ mutationFn: ({ id, note }) => adminApi.rejectRefund(id, note), onSuccess: invalidate, meta: { successMessage: 'Refund rejected' } })
+  const processMut = useMutation({ mutationFn: ({ id, bankRef, note }) => adminApi.processRefund(id, bankRef, note), onSuccess: invalidate, meta: { successMessage: 'Refund marked as processed' } })
 
   return (
     <div className="space-y-4">

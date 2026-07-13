@@ -12,6 +12,7 @@ export default function RefundModal({ orderNo, onClose }) {
       qc.invalidateQueries({ queryKey: ['order', orderNo] })
       onClose()
     },
+    meta: { suppressErrorToast: true, successMessage: 'Refund request submitted' },
   })
 
   return (

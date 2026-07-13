@@ -11,10 +11,12 @@ export default function AdminUsersPage() {
   const statusMut = useMutation({
     mutationFn: ({ id, status }) => adminApi.updateUserStatus(id, status),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['admin', 'users'] }),
+    meta: { successMessage: (data, vars) => vars.status === 'ACTIVE' ? 'User reactivated' : 'User suspended' },
   })
   const bankMut = useMutation({
     mutationFn: ({ id, verified }) => adminApi.verifyBank(id, verified),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['admin', 'users'] }),
+    meta: { successMessage: 'Bank verified' },
   })
 
   if (isLoading) return <p className="text-zinc-500">Loading…</p>

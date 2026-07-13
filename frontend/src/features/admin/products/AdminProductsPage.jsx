@@ -14,6 +14,7 @@ export default function AdminProductsPage() {
   const patchStatus = useMutation({
     mutationFn: ({ id, status }) => listingsApi.adminPatchProductStatus(id, status),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['adminProducts'] }),
+    meta: { successMessage: (data, vars) => vars.status === 'SUSPENDED' ? 'Product suspended' : 'Product restored' },
   })
 
   if (isLoading) return <p className="p-6">Loading…</p>

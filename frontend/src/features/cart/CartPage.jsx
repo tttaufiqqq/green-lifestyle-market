@@ -27,8 +27,8 @@ export default function CartPage() {
     },
   }
 
-  const updateMut = useMutation({ mutationFn: ({ id, qty }) => cartApi.updateQuantity(id, qty), ...mutOpts })
-  const removeMut = useMutation({ mutationFn: (id) => cartApi.removeItem(id), ...mutOpts })
+  const updateMut = useMutation({ mutationFn: ({ id, qty }) => cartApi.updateQuantity(id, qty), ...mutOpts, meta: { successMessage: 'Cart updated' } })
+  const removeMut = useMutation({ mutationFn: (id) => cartApi.removeItem(id), ...mutOpts, meta: { successMessage: 'Item removed' } })
 
   const updating = updateMut.isPending || removeMut.isPending
 

@@ -30,10 +30,12 @@ export default function MySalesPage() {
   const confirmMut = useMutation({
     mutationFn: (orderNo) => orderApi.confirm(orderNo),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['sales'] }),
+    meta: { successMessage: 'Order confirmed' },
   })
   const rejectMut = useMutation({
     mutationFn: (orderNo) => orderApi.reject(orderNo),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['sales'] }),
+    meta: { successMessage: 'Order rejected' },
   })
 
   return (

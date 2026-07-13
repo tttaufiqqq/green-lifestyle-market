@@ -19,10 +19,12 @@ export default function OrderDetailPage() {
   const cancelMut = useMutation({
     mutationFn: () => orderApi.cancel(orderNo),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['order', orderNo] }),
+    meta: { successMessage: 'Order cancelled' },
   })
   const receiptMut = useMutation({
     mutationFn: () => orderApi.confirmReceipt(orderNo),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['order', orderNo] }),
+    meta: { successMessage: 'Receipt confirmed' },
   })
 
   if (isLoading) return <p className="p-8 text-zinc-500">Loading…</p>

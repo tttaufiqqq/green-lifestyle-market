@@ -50,12 +50,14 @@ export default function CheckoutPage() {
     mutationFn: () => checkoutApi.preview(buildRequest(choices)),
     onSuccess: (data) => { setPreview(data); setError(null) },
     onError: (e) => { setError(e.message ?? 'Preview failed'); setPreview(null) },
+    meta: { suppressErrorToast: true },
   })
 
   const checkoutMut = useMutation({
     mutationFn: () => checkoutApi.checkout(buildRequest(choices)),
     onSuccess: (data) => { window.location.href = data.paymentUrl },
     onError: (e) => setError(e.message ?? 'Checkout failed'),
+    meta: { suppressErrorToast: true },
   })
 
   const handleChoice = (sellerId, val) => {

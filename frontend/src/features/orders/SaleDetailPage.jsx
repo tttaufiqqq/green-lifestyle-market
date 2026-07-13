@@ -18,18 +18,21 @@ export default function SaleDetailPage() {
 
   const invalidate = () => qc.invalidateQueries({ queryKey: ['sale', orderNo] })
 
-  const confirmMut = useMutation({ mutationFn: () => orderApi.confirm(orderNo), onSuccess: invalidate })
+  const confirmMut = useMutation({ mutationFn: () => orderApi.confirm(orderNo), onSuccess: invalidate, meta: { successMessage: 'Order confirmed' } })
   const rejectMut  = useMutation({
     mutationFn: (req) => orderApi.reject(orderNo, req),
     onSuccess: () => { invalidate(); setModal(null) },
+    meta: { successMessage: 'Order rejected' },
   })
   const shipMut    = useMutation({
     mutationFn: (req) => orderApi.ship(orderNo, req),
     onSuccess: () => { invalidate(); setModal(null) },
+    meta: { successMessage: 'Marked as shipped' },
   })
   const meetupMut  = useMutation({
     mutationFn: (req) => orderApi.readyMeetup(orderNo, req),
     onSuccess: () => { invalidate(); setModal(null) },
+    meta: { successMessage: 'Ready for meetup' },
   })
 
   if (isLoading) return <p className="p-8 text-zinc-500">Loading…</p>

@@ -23,11 +23,13 @@ export default function AdminCategoriesPage() {
       setForm(emptyForm)
       setEditing(null)
     },
+    meta: { successMessage: 'Category saved' },
   })
 
   const remove = useMutation({
     mutationFn: (id) => listingsApi.adminDeleteCategory(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['adminCategories'] }),
+    meta: { successMessage: 'Category deleted' },
   })
 
   const startEdit = (cat) => {

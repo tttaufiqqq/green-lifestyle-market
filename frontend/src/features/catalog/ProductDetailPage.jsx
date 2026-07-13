@@ -30,6 +30,7 @@ export default function ProductDetailPage() {
       setAdded(true)
       setTimeout(() => setAdded(false), 2000)
     },
+    meta: { successMessage: 'Added to cart' },
   })
 
   if (isLoading) return <p className="p-6">Loading…</p>

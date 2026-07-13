@@ -12,6 +12,7 @@ export default function AdminArticlesPage() {
   const remove = useMutation({
     mutationFn: (id) => articleApi.adminDelete(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['adminArticles'] }),
+    meta: { successMessage: 'Article deleted' },
   })
 
   if (isLoading) return <p>Loading…</p>

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useListingForm } from './useListingForm'
 import { listingsApi } from './listings.api'
+import { toast } from '../../stores/toast'
 
 export default function ListingFormPage() {
   const { id } = useParams()
@@ -40,8 +41,9 @@ function ListingForm({ initial, id, images, setImages, navigate }) {
     try {
       const res = await listingsApi.uploadImage(id, file)
       setImages(res.images ?? [])
+      toast.success('Image uploaded')
     } catch (err) {
-      alert(err.message)
+      toast.error(err.message)
     } finally {
       setUploading(false)
       e.target.value = ''
@@ -52,8 +54,9 @@ function ListingForm({ initial, id, images, setImages, navigate }) {
     try {
       await listingsApi.deleteImage(id, imgId)
       setImages(prev => prev.filter(i => i.id !== imgId))
+      toast.success('Image removed')
     } catch (err) {
-      alert(err.message)
+      toast.error(err.message)
     }
   }
 

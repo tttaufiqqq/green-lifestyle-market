@@ -24,10 +24,11 @@ export default function AdminPayoutsPage() {
     enabled: tab === 'pending',
   })
 
-  const createMut  = useMutation({ mutationFn: adminApi.createPayout, onSuccess: invalidate })
+  const createMut  = useMutation({ mutationFn: adminApi.createPayout, onSuccess: invalidate, meta: { successMessage: 'Payout created' } })
   const markPaidMut= useMutation({
     mutationFn: ({ id, bankRef }) => adminApi.markPaid(id, bankRef),
     onSuccess: invalidate,
+    meta: { successMessage: 'Payout marked as paid' },
   })
 
   const isLoading = tab === 'eligible' ? loadingEligible : loadingPending

@@ -17,6 +17,11 @@ export default function MyListingsPage() {
   const patchStatus = useMutation({
     mutationFn: ({ id, status }) => listingsApi.patchStatus(id, status),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['myListings'] }),
+    meta: {
+      successMessage: (data, vars) => ({
+        ACTIVE: 'Listing activated', DRAFT: 'Listing moved to draft', DELETED: 'Listing deleted',
+      }[vars.status] ?? 'Listing updated'),
+    },
   })
 
   if (isLoading) return <p className="p-6">Loading…</p>
