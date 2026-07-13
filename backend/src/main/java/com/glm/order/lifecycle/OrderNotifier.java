@@ -4,6 +4,7 @@ import com.glm.notification.entity.Notification;
 import com.glm.notification.repository.NotificationRepository;
 import com.glm.order.entity.Order;
 import com.glm.user.entity.User;
+import com.glm.user.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -19,9 +20,11 @@ public class OrderNotifier {
 
     private static final Logger log = LoggerFactory.getLogger(OrderNotifier.class);
     private final NotificationRepository notificationRepo;
+    private final UserRepository userRepo;
 
-    public OrderNotifier(NotificationRepository notificationRepo) {
+    public OrderNotifier(NotificationRepository notificationRepo, UserRepository userRepo) {
         this.notificationRepo = notificationRepo;
+        this.userRepo = userRepo;
     }
 
     public void onConfirmed(Order order) {
@@ -55,10 +58,16 @@ public class OrderNotifier {
             "Order " + order.getOrderNo() + " is now completed.", order.getOrderNo());
     }
 
+    /** Docs/notifications.md: refund REQUESTED notifies admin + seller. */
     public void onRefundRequested(Order order) {
         write(order.getSeller(), "REFUND_REQUESTED", "Refund requested",
             "Buyer requested a refund for order " + order.getOrderNo() + ". Pending admin review.",
             order.getOrderNo());
+        userRepo.findAll().stream()
+            .filter(u -> u.getRole() == User.Role.ADMIN)
+            .forEach(admin -> write(admin, "REFUND_REQUESTED", "Refund requested",
+                "Buyer requested a refund for order " + order.getOrderNo() + ". Review needed.",
+                order.getOrderNo()));
     }
 
     private void write(User user, String type, String title, String body, String ref) {

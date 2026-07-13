@@ -103,7 +103,7 @@ public class RefundService {
     }
 
     /**
-     * Admin processes the refund: bankRef mandatory → order REFUNDED, stock restored.
+     * Admin processes the refund: bankRef mandatory — order REFUNDED, stock restored.
      * Blocked by E-REF-PAIDOUT if order already in a payout.
      * Written atomically with audit log in one TX.
      */
@@ -133,15 +133,15 @@ public class RefundService {
         stockRestorer.restore(order); // restore CONSUMED stock back to product
 
         audit(admin, "REFUND_PROCESS", "refund", refundId);
-        notify(order.getBuyer(), "REFUNDED", "Refund processed",
+        notify(order.getBuyer(), "REFUND_PROCESSED", "Refund processed",
             "Your refund of RM " + refund.getAmount() + " for order "
                 + order.getOrderNo() + " has been processed. Bank ref: " + bankRef);
-        notify(order.getSeller(), "REFUNDED", "Order refunded",
+        notify(order.getSeller(), "REFUND_PROCESSED", "Order refunded",
             "Order " + order.getOrderNo() + " has been refunded to the buyer.");
         log.info("[REFUND] PROCESSED refundId={} orderId={} bankRef={}", refundId, order.getId(), bankRef);
     }
 
-    // ── helpers ───────────────────────────────────────────────────────────────
+    // ── helpers ──────────────────────────────────────────────────────────────
 
     private Refund require(Long id) {
         return refundRepo.findById(id).orElseThrow(() ->

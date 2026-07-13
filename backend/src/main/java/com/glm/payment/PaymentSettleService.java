@@ -11,6 +11,7 @@ import com.glm.order.repository.StockReservationRepository;
 import com.glm.payment.entity.Payment;
 import com.glm.payment.repository.PaymentRepository;
 import com.glm.user.entity.User;
+import com.glm.user.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import org.slf4j.Logger;
@@ -36,18 +37,21 @@ public class PaymentSettleService {
     private final StockReservationRepository reservationRepo;
     private final ProductRepository          productRepo;
     private final NotificationRepository     notificationRepo;
+    private final UserRepository             userRepo;
     private final EntityManager              em;
 
     public PaymentSettleService(PaymentRepository paymentRepo, OrderRepository orderRepo,
                                  StockReservationRepository reservationRepo,
                                  ProductRepository productRepo,
                                  NotificationRepository notificationRepo,
+                                 UserRepository userRepo,
                                  EntityManager em) {
         this.paymentRepo     = paymentRepo;
         this.orderRepo       = orderRepo;
         this.reservationRepo = reservationRepo;
         this.productRepo     = productRepo;
         this.notificationRepo = notificationRepo;
+        this.userRepo        = userRepo;
         this.em              = em;
     }
 
@@ -124,7 +128,7 @@ public class PaymentSettleService {
         log.info("[EXPIRE] paymentId={}", paymentId);
     }
 
-    /** R07-E1: set to REVIEW when verification fails (amount mismatch or API error). */
+    /** R07-E1: set to REVIEW when verification fails (amount mismatch or API error); alerts admins. */
     @Transactional
     public void markReview(Long paymentId) {
         Payment payment = lockPayment(paymentId);
@@ -132,11 +136,12 @@ public class PaymentSettleService {
             payment.setStatus(Payment.Status.REVIEW);
             payment.setUpdatedAt(Instant.now());
             paymentRepo.save(payment);
+            alertAdmins(payment);
             log.warn("[REVIEW] paymentId={} — manual admin check required", paymentId);
         }
     }
 
-    // ── helpers ───────────────────────────────────────────────────────────────
+    // ── helpers ──────────────────────────────────────────────────────────────
 
     private Payment lockPayment(Long paymentId) {
         var list = em.createQuery("SELECT p FROM Payment p WHERE p.id = :id", Payment.class)
@@ -144,6 +149,14 @@ public class PaymentSettleService {
             .setParameter("id", paymentId)
             .getResultList();
         return list.isEmpty() ? null : list.get(0);
+    }
+
+    private void alertAdmins(Payment payment) {
+        userRepo.findAll().stream()
+            .filter(u -> u.getRole() == User.Role.ADMIN)
+            .forEach(admin -> notify(admin, "ADMIN_ALERT", "Payment needs review",
+                "Payment " + payment.getPaymentNo() + " failed verification and needs manual review.",
+                payment.getPaymentNo()));
     }
 
     private void notify(User user, String type, String title, String body, String ref) {
