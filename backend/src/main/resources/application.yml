@@ -66,3 +66,7 @@ app:
     base-url: ${TOYYIBPAY_BASE_URL:https://dev.toyyibpay.com}
     secret-key: ${TOYYIBPAY_SECRET_KEY:}
     category-code: ${TOYYIBPAY_CATEGORY_CODE:}
+  vapid:
+    public-key: ${VAPID_PUBLIC_KEY:}
+    private-key: ${VAPID_PRIVATE_KEY:}
+    subject: ${VAPID_SUBJECT:mailto:admin@glm.tttaufiqqq.com}

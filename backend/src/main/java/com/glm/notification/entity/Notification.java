@@ -7,6 +7,7 @@ import java.time.Instant;
 
 @Getter @Setter @NoArgsConstructor
 @Entity @Table(name = "notifications")
+@EntityListeners(NotificationEntityListener.class)
 public class Notification {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
