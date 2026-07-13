@@ -23,6 +23,7 @@ import ArticlesPage from './features/articles/ArticlesPage'
 import ArticleDetailPage from './features/articles/ArticleDetailPage'
 import AdminArticlesPage from './features/admin/articles/AdminArticlesPage'
 import ArticleFormPage from './features/admin/articles/ArticleFormPage'
+import HelpPage from './features/help/HelpPage'
 import AdminLayout from './features/admin/AdminLayout'
 import AdminDashboardPage from './features/admin/AdminDashboardPage'
 import AdminUsersPage from './features/admin/AdminUsersPage'
@@ -77,6 +78,8 @@ const router = createBrowserRouter([
       { path: 'notifications',    element: <RequireAuth><NotificationsPage /></RequireAuth> },
       { path: 'articles',         element: <ArticlesPage /> },
       { path: 'articles/:slug',   element: <ArticleDetailPage /> },
+      { path: 'help',             element: <HelpPage /> },
+      { path: 'help/:slug',       element: <HelpPage /> },
       {
         path: 'admin',
         element: <RequireAdmin><AdminLayout /></RequireAdmin>,
