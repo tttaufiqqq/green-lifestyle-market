@@ -19,6 +19,10 @@ import MySalesPage from './features/orders/MySalesPage'
 import SaleDetailPage from './features/orders/SaleDetailPage'
 import MyPayoutsPage from './features/payouts/MyPayoutsPage'
 import NotificationsPage from './features/notifications/NotificationsPage'
+import ArticlesPage from './features/articles/ArticlesPage'
+import ArticleDetailPage from './features/articles/ArticleDetailPage'
+import AdminArticlesPage from './features/admin/articles/AdminArticlesPage'
+import ArticleFormPage from './features/admin/articles/ArticleFormPage'
 import AdminLayout from './features/admin/AdminLayout'
 import AdminDashboardPage from './features/admin/AdminDashboardPage'
 import AdminUsersPage from './features/admin/AdminUsersPage'
@@ -71,6 +75,8 @@ const router = createBrowserRouter([
       { path: 'sales/:orderNo',   element: <RequireAuth><SaleDetailPage /></RequireAuth> },
       { path: 'payouts',          element: <RequireAuth><MyPayoutsPage /></RequireAuth> },
       { path: 'notifications',    element: <RequireAuth><NotificationsPage /></RequireAuth> },
+      { path: 'articles',         element: <ArticlesPage /> },
+      { path: 'articles/:slug',   element: <ArticleDetailPage /> },
       {
         path: 'admin',
         element: <RequireAdmin><AdminLayout /></RequireAdmin>,
@@ -83,6 +89,9 @@ const router = createBrowserRouter([
           { path: 'users',            element: <AdminUsersPage /> },
           { path: 'listings',         element: <AdminProductsPage /> },
           { path: 'categories',       element: <AdminCategoriesPage /> },
+          { path: 'articles',         element: <AdminArticlesPage /> },
+          { path: 'articles/new',     element: <ArticleFormPage /> },
+          { path: 'articles/:id/edit',element: <ArticleFormPage /> },
         ],
       },
     ],
