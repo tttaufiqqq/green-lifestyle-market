@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import java.time.Instant;
 import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
@@ -12,6 +13,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     long countByUserIdAndReadAtIsNull(Long userId);
 
     @Modifying
-    @Query("UPDATE Notification n SET n.readAt = CURRENT_TIMESTAMP WHERE n.user.id = :userId AND n.readAt IS NULL")
-    int markAllReadForUser(@Param("userId") Long userId);
+    @Query("UPDATE Notification n SET n.readAt = :now WHERE n.user.id = :userId AND n.readAt IS NULL")
+    int markAllReadForUser(@Param("userId") Long userId, @Param("now") Instant now);
 }
