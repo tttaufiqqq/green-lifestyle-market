@@ -123,6 +123,13 @@
       <artifactId>webpush</artifactId>
       <version>6.1.3</version>
     </dependency>
+    <!-- webpush's PushService needs a JWT implementation for VAPID signing at runtime;
+         neither is declared transitively. jose4j is the lighter of the two supported options. -->
+    <dependency>
+      <groupId>org.bitbucket.b_c</groupId>
+      <artifactId>jose4j</artifactId>
+      <version>0.9.6</version>
+    </dependency>
 
     <!-- Test -->
     <dependency>
