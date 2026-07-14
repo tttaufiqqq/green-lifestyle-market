@@ -145,7 +145,10 @@
         <configuration>
           <environmentVariables>
             <IT_DB_URL>jdbc:oracle:thin:@100.118.110.114:1521/FREEPDB1</IT_DB_URL>
-            <IT_DB_SYS_PASS>qwertY1612</IT_DB_SYS_PASS>
+            <!-- IT_DB_SYS_PASS intentionally not set here: it used to be a hardcoded
+                 literal, committed to the repo. Set it in your shell/CI environment
+                 instead; MigrationIT.java's System.getenv().getOrDefault falls back
+                 to the lab's known SYS password if it's unset locally. -->
           </environmentVariables>
         </configuration>
         <executions>
