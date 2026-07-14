@@ -1,5 +1,8 @@
 # Prod profile: Swagger disabled, minimal logging, session tables managed by Flyway.
 
+server:
+  port: 8081
+
 springdoc:
   api-docs:
     enabled: false
