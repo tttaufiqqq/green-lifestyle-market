@@ -123,12 +123,13 @@
       <artifactId>webpush</artifactId>
       <version>6.1.3</version>
     </dependency>
-    <!-- webpush's PushService needs a JWT implementation for VAPID signing at runtime;
-         neither is declared transitively. jose4j is the lighter of the two supported options. -->
+    <!-- webpush's PushService needs a JwtFactory implementation for VAPID signing at runtime.
+         Raw jose4j alone isn't enough: webpush provides its own glue module that implements
+         its JwtFactory interface on top of jose4j; that's what's actually required here. -->
     <dependency>
-      <groupId>org.bitbucket.b_c</groupId>
-      <artifactId>jose4j</artifactId>
-      <version>0.9.6</version>
+      <groupId>dev.blanke.webpush.jwt</groupId>
+      <artifactId>webpush-jwt-jose4j</artifactId>
+      <version>6.1.3</version>
     </dependency>
 
     <!-- Test -->
